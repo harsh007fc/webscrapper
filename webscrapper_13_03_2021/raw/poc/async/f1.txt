@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 this is thea first line of the file
+=======
+this is the first line of the file
+>>>>>>> a252dec3a140cff1f86a19cbffca5b4ef6dd8e45
