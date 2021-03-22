@@ -15,7 +15,7 @@ function cb(error,response,html)
         extractHtml(html);
     }
 }
-
+//this is a comment
 function extractHtml(html)
 {
     let selectorTool = cheerio.load(html);
@@ -26,7 +26,39 @@ function extractHtml(html)
     {
         let scoreCardbtnsLinks = selectorTool(matchCardArr[i]).find(".btn.btn-sm.btn-outline-dark.match-cta");
         let scoreCardLinks = selectorTool(scoreCardbtnsLinks[2]).attr("href");
-        console.log("https://www.espncricinfo.com/"+scoreCardLinks);
+        let fulLink = "https://www.espncricinfo.com/"+scoreCardLinks
+        // console.log(fulLink);
+        getplayerOfTHeMatch(fulLink);
     }
     // console.log(teamDetailArr.length);
+}
+
+
+function getplayerOfTHeMatch(fulLink)
+{
+    request(fulLink,cb1)
+    
+
+    function cb1(error,res,html)
+    {
+        if(error)
+        {
+            console.log(error);
+        }
+        else
+        {
+            extractHtml1(html);
+        }
+    }
+}
+
+
+function extractHtml1(html)
+{
+    let selectorTool = cheerio.load(html);
+
+    let bestPlayerName = selectorTool(".best-player .best-player-name").text();
+    //to print with teamname
+    // let bestPlayerName = selectorTool(".best-player-content").text();
+    console.log(bestPlayerName);
 }
