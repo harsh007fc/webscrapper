@@ -28,7 +28,7 @@ function extractHtml(html)
         let scoreCardLinks = selectorTool(scoreCardbtnsLinks[2]).attr("href");
         let fulLink = "https://www.espncricinfo.com/"+scoreCardLinks
         allLinks.push(fulLink);
-        // console.log(fulLink);
+        // console.log(allLinks);
         // getplayerOfTHeMatch(fulLink);
     }
     serialPlayer(allLinks,0);
