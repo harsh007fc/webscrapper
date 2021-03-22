@@ -58,23 +58,7 @@ function serialPlayer(allLinks,n)
     })
 }
 
-// function getplayerOfTHeMatch(fulLink)
-// {
-//     request(fulLink,cb1)
-    
 
-//     function cb1(error,res,html)
-//     {
-//         if(error)
-//         {
-//             console.log(error);
-//         }
-//         else
-//         {
-//             extractHtml1(html);
-//         }
-//     }
-// }
 
 
 function extractHtml1(html)

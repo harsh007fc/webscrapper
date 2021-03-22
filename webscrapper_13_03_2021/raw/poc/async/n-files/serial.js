@@ -1,6 +1,9 @@
 let fs = require("fs");
 let arr = ["../f1.txt", "../f2.txt", "../f3.txt", "../f4.txt"];
 console.log("before");
+
+
+//yeh kaam nhi krega kyunki deadlock lag jayega
 // for (let i = 0; i < arr.length;) {
 //     console.log(i);
 //     fs.readFile(arr[i], function (err, data) {
