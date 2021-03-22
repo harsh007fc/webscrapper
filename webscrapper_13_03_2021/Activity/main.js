@@ -1,7 +1,11 @@
+
+///AlWAYS DELETE FOLDES AND FILES INCLUDED BY THIS CODE
+
 let request = require("request");
 let cheerio = require("cheerio");
 let fs = require("fs");
 let path = require("path");
+let PDFDocument = require('pdfkit');
 
 
 let url = "https://github.com/topics";
@@ -54,19 +58,36 @@ function getRepoLinks(html)
     dirCreator(topicName);
 
     let arr = selTool("a.text-bold");
-    console.log(topicName);
+    // console.log(topicName);
     for (let i = 0; i < 8; i++)
      {
         let link = selTool(arr[i]).attr("href");
 
         let fullLink = "https://github.com" + link;
         let repoName = fullLink.split('/').pop();
-        console.log(repoName);
-        createFile(repoName,topicName);
+        // console.log(repoName);
+        // createFile(repoName,topicName); // so that json dont form with pdfs
+        let fullRepoLink = "https://github.com"+link+"/issues";
+        getIssues(repoName,topicName,fullRepoLink);
     }
-    console.log("`````````````````````````````")
+    // console.log("`````````````````````````````")
 }
 
+function getIssues(repoName,topicName,fullRepoLink)
+{
+    request(fullRepoLink,cb);
+    function cb(err,res,html)
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            extractIssues(html,repoName,topicName);
+        }
+    }
+}
 
 function dirCreator(topicName)
 {
@@ -87,4 +108,33 @@ function createFile(repoName,topicName)
         createStream.end();
     
     }
+}
+
+
+function extractIssues(html,repoName,topicName)
+{
+    let selectorTool = cheerio.load(html);
+
+    let issueAnchorArr = selectorTool(".Link--primary.v-align-middle.no-underline.h4.js-navigation-open.markdown-title");
+    let arr = [];
+    for(let i = 0; i < issueAnchorArr.length; i++)
+    {
+        let name = selectorTool(issueAnchorArr[i]).text();
+        let link = selectorTool(issueAnchorArr[i]).attr("href");
+
+        arr.push({
+            "name": name,
+            "link": "http://github.com"+link
+        });
+    }
+    // console.table(arr);
+
+    let filePath = path.join(__dirname,topicName,repoName+".pdf");
+    // fs.writeFileSync(filePath,JSON.stringify(arr));
+
+    let pdfDoc = new PDFDocument;
+    pdfDoc.pipe(fs.createWriteStream(filePath));
+    pdfDoc.text(JSON.stringify(arr));
+    pdfDoc.end();
+
 }
